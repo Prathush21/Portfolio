@@ -24,7 +24,6 @@ A modern, responsive portfolio website for Prathushan Inparaj, showcasing skills
 - `index.html` - Main HTML file
 - `css/` - Directory containing CSS files
   - `style.css` - Main stylesheet
-  - `teal_style.css` - Teal color palette stylesheet
 - `js/` - Directory containing JavaScript files
   - `script.js` - Main JavaScript file with animations and interactions
 - `images/` - Directory containing images used in the portfolio
