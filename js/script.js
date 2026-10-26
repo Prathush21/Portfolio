@@ -9,8 +9,9 @@ AOS.init({
 const typed = new Typed(".typed-text", {
   strings: [
     "Machine Learning Engineer",
-    "Data Scientist",
-    "Computer Science Engineer",
+    "Agentic AI Engineer",
+    "LLM Systems Engineer",
+    "Researcher in Explainable AI",
   ],
   typeSpeed: 50,
   backSpeed: 30,
