@@ -251,9 +251,26 @@
 
         <div class="project-card" data-aos="fade-up">
           <div class="project-image">
-            <div class="image-placeholder">
-              <i class="fas fa-microscope"></i>
-            </div>
+            <img
+              class="project-cover"
+              src="images/projects/xai/cover.jpg"
+              alt="A cervical cell image shown beside its segmentation mask and XAI heatmap"
+              width="568"
+              height="331"
+              loading="lazy"
+            />
+            <button
+              type="button"
+              class="demo-trigger"
+              data-demo="xai"
+              aria-haspopup="dialog"
+            >
+              <span class="demo-trigger__icon"><i class="fas fa-play"></i></span>
+              <span>Watch the demo</span>
+            </button>
+            <span class="demo-badge"
+              ><i class="fas fa-layer-group"></i> 5 steps</span
+            >
           </div>
           <div class="project-content">
             <h3>XAI for Image Segmentation of Cervical Cancer Cells</h3>
@@ -716,6 +733,33 @@
           </div>
           <div class="publication-content">
             <h3>
+              Explainable Artificial Intelligence Driven Segmentation for
+              Cervical Cancer Screening
+            </h3>
+            <p class="venue">
+              IEEE Access, Vol. 13, pp. 71306&ndash;71322 (2025)
+            </p>
+            <a
+              href="https://ieeexplore.ieee.org/document/10965629"
+              target="_blank"
+              class="publication-link"
+            >
+              <i class="fas fa-external-link-alt"></i> View on IEEE Xplore
+            </a>
+            <div class="publication-tags">
+              <span>Explainable AI</span>
+              <span>Weakly Supervised Segmentation</span>
+              <span>Medical Imaging</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="publication-card" data-aos="fade-up">
+          <div class="publication-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <div class="publication-content">
+            <h3>
               EnsembleCAM: Unified Visualization for Explainable Cervical Cancer
               Identification
             </h3>
@@ -878,6 +922,79 @@
         </div>
       </div>
     </footer>
+
+    <!-- Project Demo Lightbox -->
+    <div
+      class="demo-modal"
+      id="demo-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="demo-modal-title"
+      hidden
+    >
+      <div class="demo-modal__backdrop" data-demo-close></div>
+      <div class="demo-modal__dialog">
+        <div class="demo-modal__header">
+          <div>
+            <p class="demo-modal__eyebrow" id="demo-modal-eyebrow"></p>
+            <h3 class="demo-modal__title" id="demo-modal-title"></h3>
+          </div>
+          <button
+            type="button"
+            class="demo-modal__close"
+            data-demo-close
+            aria-label="Close demo"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="demo-stage">
+          <img class="demo-stage__media" id="demo-media" alt="" />
+          <div class="demo-spinner" id="demo-spinner" hidden></div>
+          <button
+            type="button"
+            class="demo-stage__play"
+            id="demo-play"
+            hidden
+          >
+            <i class="fas fa-play"></i> Play this step
+          </button>
+          <button
+            type="button"
+            class="demo-nav demo-nav--prev"
+            id="demo-prev"
+            aria-label="Previous step"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button
+            type="button"
+            class="demo-nav demo-nav--next"
+            id="demo-next"
+            aria-label="Next step"
+          >
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <button
+            type="button"
+            class="demo-stage__replay"
+            id="demo-replay"
+            hidden
+          >
+            <i class="fas fa-rotate-right"></i> Replay
+          </button>
+        </div>
+
+        <div class="demo-modal__footer">
+          <p class="demo-caption" aria-live="polite">
+            <span class="demo-caption__step" id="demo-step-label"></span>
+            <span class="demo-caption__text" id="demo-step-text"></span>
+          </p>
+          <ol class="demo-dots" id="demo-dots"></ol>
+        </div>
+      </div>
+    </div>
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>

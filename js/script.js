@@ -149,3 +149,218 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+// Project demo lightbox
+document.addEventListener("DOMContentLoaded", function () {
+  const PROJECT_DEMOS = {
+    xai: {
+      eyebrow: "SegXperts — Desktop App",
+      title: "XAI for Image Segmentation of Cervical Cancer Cells",
+      steps: [
+        {
+          label: "Step 1 of 5 · Upload",
+          text: "Load a single cervical cell image or a zipped batch, and the app confirms the upload before moving on to configuration.",
+          src: "images/projects/xai/step1.gif",
+          poster: "images/projects/xai/step1-poster.jpg",
+          animated: true,
+        },
+        {
+          label: "Step 2 of 5 · Configure",
+          text: "Pick the backbone and XAI method — XceptionNet + GradCAM++ or VGGNet + LRP — set the magnification in µ/pixel, then generate the segmentation masks.",
+          src: "images/projects/xai/step2.gif",
+          poster: "images/projects/xai/step2-poster.jpg",
+          animated: true,
+        },
+        {
+          label: "Step 3 of 5 · Summary view",
+          text: "Every uploaded cell appears beside its predicted mask, with nucleus, cytoplasm and background separated pixel by pixel.",
+          src: "images/projects/xai/step3.jpg",
+          poster: "images/projects/xai/step3.jpg",
+          animated: false,
+        },
+        {
+          label: "Step 4 of 5 · Detailed view",
+          text: "Compare the original image, the segmentation mask and the XAI heatmap that produced it, alongside the derived descriptors — nucleus area, cytoplasm area and N:C ratio.",
+          src: "images/projects/xai/step4.gif",
+          poster: "images/projects/xai/step4-poster.jpg",
+          animated: true,
+        },
+        {
+          label: "Step 5 of 5 · Export",
+          text: "Download the whole run — masks, heatmaps and descriptor metrics — as a single zip archive.",
+          src: "images/projects/xai/step5.gif",
+          poster: "images/projects/xai/step5-poster.jpg",
+          animated: true,
+        },
+      ],
+    },
+  };
+
+  const modal = document.getElementById("demo-modal");
+  if (!modal) return;
+
+  const dialog = modal.querySelector(".demo-modal__dialog");
+  const eyebrow = document.getElementById("demo-modal-eyebrow");
+  const title = document.getElementById("demo-modal-title");
+  const media = document.getElementById("demo-media");
+  const spinner = document.getElementById("demo-spinner");
+  const playBtn = document.getElementById("demo-play");
+  const replayBtn = document.getElementById("demo-replay");
+  const prevBtn = document.getElementById("demo-prev");
+  const nextBtn = document.getElementById("demo-next");
+  const stepLabel = document.getElementById("demo-step-label");
+  const stepText = document.getElementById("demo-step-text");
+  const dots = document.getElementById("demo-dots");
+
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  let steps = [];
+  let index = 0;
+  let loadToken = 0;
+  let lastFocused = null;
+
+  function buildDots() {
+    dots.innerHTML = "";
+    steps.forEach((step, i) => {
+      const li = document.createElement("li");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = i + 1;
+      button.setAttribute("aria-label", step.label);
+      button.addEventListener("click", () => goTo(i));
+      li.appendChild(button);
+      dots.appendChild(li);
+    });
+  }
+
+  function playStep() {
+    const step = steps[index];
+    const token = ++loadToken;
+    playBtn.hidden = true;
+    replayBtn.hidden = true;
+    spinner.hidden = false;
+
+    // Fetch the GIF fully before swapping it in, so it plays from frame one.
+    const probe = new Image();
+    probe.onload = () => {
+      if (token !== loadToken) return;
+      media.src = step.src;
+      spinner.hidden = true;
+      replayBtn.hidden = false;
+    };
+    probe.onerror = () => {
+      if (token !== loadToken) return;
+      spinner.hidden = true;
+      playBtn.hidden = false;
+    };
+    probe.src = step.src;
+  }
+
+  function replayStep() {
+    const step = steps[index];
+    media.src = step.poster;
+    requestAnimationFrame(() => {
+      media.src = step.src;
+    });
+  }
+
+  function goTo(i) {
+    index = (i + steps.length) % steps.length;
+    const step = steps[index];
+
+    loadToken++;
+    spinner.hidden = true;
+    replayBtn.hidden = true;
+    playBtn.hidden = true;
+
+    media.src = step.poster;
+    media.alt = step.label + ". " + step.text;
+
+    stepLabel.textContent = step.label;
+    stepText.textContent = step.text;
+
+    Array.from(dots.querySelectorAll("button")).forEach((button, i) => {
+      button.setAttribute("aria-current", i === index ? "true" : "false");
+    });
+
+    if (step.animated) {
+      if (reduceMotion) {
+        playBtn.hidden = false;
+      } else {
+        playStep();
+      }
+    }
+
+    // Warm the neighbouring posters so stepping through feels instant.
+    const neighbour = steps[(index + 1) % steps.length];
+    new Image().src = neighbour.poster;
+  }
+
+  function openDemo(key) {
+    const demo = PROJECT_DEMOS[key];
+    if (!demo) return;
+
+    lastFocused = document.activeElement;
+    steps = demo.steps;
+    eyebrow.textContent = demo.eyebrow;
+    title.textContent = demo.title;
+    buildDots();
+
+    modal.hidden = false;
+    document.body.classList.add("demo-open");
+    goTo(0);
+    modal.querySelector(".demo-modal__close").focus();
+  }
+
+  function closeDemo() {
+    loadToken++;
+    modal.hidden = true;
+    document.body.classList.remove("demo-open");
+    media.removeAttribute("src");
+    if (lastFocused) lastFocused.focus();
+  }
+
+  document.querySelectorAll("[data-demo]").forEach((trigger) => {
+    trigger.addEventListener("click", () =>
+      openDemo(trigger.getAttribute("data-demo"))
+    );
+  });
+
+  modal.querySelectorAll("[data-demo-close]").forEach((el) => {
+    el.addEventListener("click", closeDemo);
+  });
+
+  prevBtn.addEventListener("click", () => goTo(index - 1));
+  nextBtn.addEventListener("click", () => goTo(index + 1));
+  playBtn.addEventListener("click", playStep);
+  replayBtn.addEventListener("click", replayStep);
+
+  document.addEventListener("keydown", (e) => {
+    if (modal.hidden) return;
+
+    if (e.key === "Escape") {
+      closeDemo();
+    } else if (e.key === "ArrowLeft") {
+      goTo(index - 1);
+    } else if (e.key === "ArrowRight") {
+      goTo(index + 1);
+    } else if (e.key === "Tab") {
+      // Keep focus inside the dialog while it is open.
+      const focusable = dialog.querySelectorAll(
+        "button:not([hidden]):not(:disabled)"
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
+});
