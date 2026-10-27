@@ -2182,3 +2182,8 @@ body.demo-open {
 .demo-nav[hidden] {
   display: none;
 }
+
+/* Buffering spinner must sit above the video, not behind it */
+.demo-spinner {
+  z-index: 2;
+}

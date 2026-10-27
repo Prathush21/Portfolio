@@ -274,7 +274,21 @@ document.addEventListener("DOMContentLoaded", function () {
     video.hidden = true;
     video.removeAttribute("src");
     video.load();
+    spinner.hidden = true;
   }
+
+  // A 21 MB file takes a moment to buffer; without this the player looks dead
+  // between the click and the first frame.
+  ["waiting", "stalled", "seeking"].forEach((e) =>
+    video.addEventListener(e, () => {
+      if (!video.hidden) spinner.hidden = false;
+    })
+  );
+  ["playing", "canplay", "seeked", "pause", "error"].forEach((e) =>
+    video.addEventListener(e, () => {
+      spinner.hidden = true;
+    })
+  );
 
   function playStep() {
     const step = steps[index];
