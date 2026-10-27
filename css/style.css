@@ -2162,3 +2162,23 @@ body.demo-open {
     white-space: nowrap;
   }
 }
+
+/* Video steps in the demo lightbox */
+.demo-stage__video {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+}
+
+.demo-stage__video[hidden],
+.demo-stage__media[hidden] {
+  display: none;
+}
+
+.demo-dots[hidden] {
+  display: none;
+}
+
+.demo-nav[hidden] {
+  display: none;
+}

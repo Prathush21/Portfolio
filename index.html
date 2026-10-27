@@ -432,9 +432,24 @@
 
         <div class="project-card" data-aos="fade-up">
           <div class="project-image">
-            <div class="image-placeholder">
-              <i class="fas fa-map-location-dot"></i>
-            </div>
+            <img
+              class="project-cover"
+              src="images/projects/damage-control/cover.jpg"
+              alt="Damage zones drawn over a map of distribution assets in Naperville"
+              width="900"
+              height="540"
+              loading="lazy"
+            />
+            <button
+              type="button"
+              class="demo-trigger"
+              data-demo="damage-control"
+              aria-haspopup="dialog"
+            >
+              <span class="demo-trigger__icon"><i class="fas fa-play"></i></span>
+              <span>Watch the walkthrough</span>
+            </button>
+            <span class="demo-badge"><i class="fas fa-film"></i> 3:54</span>
           </div>
           <div class="project-content">
             <h3>Damage Control - Disaster Damage Prediction Platform</h3>
@@ -1248,6 +1263,14 @@
 
         <div class="demo-stage">
           <img class="demo-stage__media" id="demo-media" alt="" />
+          <video
+            class="demo-stage__media demo-stage__video"
+            id="demo-video"
+            controls
+            playsinline
+            preload="none"
+            hidden
+          ></video>
           <div class="demo-spinner" id="demo-spinner" hidden></div>
           <button
             type="button"

@@ -195,6 +195,18 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       ],
     },
+    "damage-control": {
+      eyebrow: "ChallengerX 2023 Winner",
+      title: "Damage Control \u2014 Disaster Damage Prediction Platform",
+      steps: [
+        {
+          label: "Product walkthrough",
+          text: "A hurricane warning for Naperville sets the scenario: map the electricity distribution assets, draw the damage zones, predict severity across the network, and schedule restoration crews through IFS DSE.",
+          video: "images/projects/damage-control/pitch.mp4",
+          poster: "images/projects/damage-control/poster.jpg",
+        },
+      ],
+    },
     roads: {
       eyebrow: "Tableau \u2014 6.2M Records",
       title: "US Road Construction and Closures Dashboard",
@@ -224,6 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const eyebrow = document.getElementById("demo-modal-eyebrow");
   const title = document.getElementById("demo-modal-title");
   const media = document.getElementById("demo-media");
+  const video = document.getElementById("demo-video");
   const spinner = document.getElementById("demo-spinner");
   const playBtn = document.getElementById("demo-play");
   const replayBtn = document.getElementById("demo-replay");
@@ -254,6 +267,13 @@ document.addEventListener("DOMContentLoaded", function () {
       li.appendChild(button);
       dots.appendChild(li);
     });
+  }
+
+  function stopVideo() {
+    video.pause();
+    video.hidden = true;
+    video.removeAttribute("src");
+    video.load();
   }
 
   function playStep() {
@@ -295,9 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
     spinner.hidden = true;
     replayBtn.hidden = true;
     playBtn.hidden = true;
-
-    media.src = step.poster;
-    media.alt = step.label + ". " + step.text;
+    stopVideo();
 
     stepLabel.textContent = step.label;
     stepText.textContent = step.text;
@@ -305,6 +323,25 @@ document.addEventListener("DOMContentLoaded", function () {
     Array.from(dots.querySelectorAll("button")).forEach((button, i) => {
       button.setAttribute("aria-current", i === index ? "true" : "false");
     });
+
+    // A lone step needs no arrows or dots.
+    const single = steps.length === 1;
+    prevBtn.hidden = single;
+    nextBtn.hidden = single;
+    dots.hidden = single;
+
+    if (step.video) {
+      media.hidden = true;
+      media.removeAttribute("src");
+      video.poster = step.poster;
+      video.src = step.video;
+      video.hidden = false;
+      return;
+    }
+
+    media.hidden = false;
+    media.src = step.poster;
+    media.alt = step.label + ". " + step.text;
 
     if (step.animated) {
       if (reduceMotion) {
@@ -339,6 +376,7 @@ document.addEventListener("DOMContentLoaded", function () {
     loadToken++;
     modal.hidden = true;
     document.body.classList.remove("demo-open");
+    stopVideo();
     media.removeAttribute("src");
     if (lastFocused) lastFocused.focus();
   }
@@ -364,9 +402,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (e.key === "Escape") {
       closeDemo();
     } else if (e.key === "ArrowLeft") {
-      goTo(index - 1);
+      if (document.activeElement !== video) goTo(index - 1);
     } else if (e.key === "ArrowRight") {
-      goTo(index + 1);
+      if (document.activeElement !== video) goTo(index + 1);
     } else if (e.key === "Tab") {
       // Keep focus inside the dialog while it is open.
       const focusable = dialog.querySelectorAll(
