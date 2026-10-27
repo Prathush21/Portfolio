@@ -195,6 +195,26 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       ],
     },
+    roads: {
+      eyebrow: "Tableau \u2014 6.2M Records",
+      title: "US Road Construction and Closures Dashboard",
+      steps: [
+        {
+          label: "View 1 of 2 \u00b7 Severity overview",
+          text: "Average closure severity by state, shown alongside closure volume for each weekday and how average severity shifts through the hours of the day.",
+          src: "images/projects/roads/overview.jpg",
+          poster: "images/projects/roads/overview.jpg",
+          animated: false,
+        },
+        {
+          label: "View 2 of 2 \u00b7 Closure map",
+          text: "Individual construction and closure events plotted across the United States, showing where incidents cluster along the road network.",
+          src: "images/projects/roads/closure-map.jpg",
+          poster: "images/projects/roads/closure-map.jpg",
+          animated: false,
+        },
+      ],
+    },
   };
 
   const modal = document.getElementById("demo-modal");
